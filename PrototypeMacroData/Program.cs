@@ -15,19 +15,16 @@ namespace PrototypeMacroData
             Type3
         };
 
-        // Skal lige se om jeg kan klare mig uden interface.
-        /*
         public interface IMacroData
         {
-            int id { get; }
-            char key { get; set; }
-            string description { get; set; }
-            MacroType type { get; set; }
-            string code { get; set; }
-
+             int id { get; }
+             char key { get; set; }
+             string description { get; set; }
+             MacroType type { get; set; }
+             string code { get; set; }
+ 
         }
-         */
-        public class MacroData //: IMacroData
+        public class MacroData : IMacroData
         {
             int id;
             char key;
@@ -44,7 +41,47 @@ namespace PrototypeMacroData
                 this.code = _code;
             }
         }
+        public class ListMacroData
+        {
+            private IMacroData[] macroData;
 
+            public ListMacroData(int _arraySize)
+            {
+                macroData = new IMacroData[_arraySize];
+            }
+
+            public bool SaveData(IMacroData _macroData)
+            {
+                int position = 0;
+                for (position = 0; position < macroData.Length; position++)
+                {
+                    if (macroData[position] == null)
+                    {
+                        macroData[position] = _macroData;
+                        return true;
+                    }
+                }
+                return false;
+            }
+            public IMacroData LoadData(int _id)
+            {
+                int position = 0;
+                for (position = 0; position < macroData.Length; position++)
+                {
+                    if (macroData[position] == null)
+                    {
+                        continue;
+                    }
+                    if (macroData[position].id == _id)
+                    {
+                        return macroData[position];
+                    }
+                }
+                return null;
+            }
+
+
+        }
 
         static void Main(string[] args)
         {
