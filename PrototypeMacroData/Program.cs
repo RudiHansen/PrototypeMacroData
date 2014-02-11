@@ -8,29 +8,23 @@ namespace PrototypeMacroData
 {
     class MacroDataClass
     {
-        enum MacroType
+        public enum MacroType
         {
             Type1,
             Type2,
             Type3
         };
 
-        public interface IMacroData
+        //public interface IMacroData
+        //{
+        //}
+        public class MacroData //: IMacroData
         {
-             int id { get; }
-             char key { get; set; }
-             string description { get; set; }
-             MacroType type { get; set; }
-             string code { get; set; }
- 
-        }
-        public class MacroData : IMacroData
-        {
-            int id;
-            char key;
-            string desctiption;
-            MacroType type;
-            string code;
+            public int id;
+            public char key;
+            public string desctiption;
+            public MacroType type;
+            public string code;
 
             public MacroData(int _id, char _key, string _desctiption,MacroType _type,string _code)
             {
@@ -43,50 +37,68 @@ namespace PrototypeMacroData
         }
         public class ListMacroData
         {
-            private IMacroData[] macroData;
+            private List<MacroData> macroDataList;
 
-            public ListMacroData(int _arraySize)
+            public ListMacroData()
             {
-                macroData = new IMacroData[_arraySize];
+                macroDataList = new List<MacroData>();
             }
 
-            public bool SaveData(IMacroData _macroData)
+            public bool SaveData(MacroData _macroData)
             {
                 int position = 0;
-                for (position = 0; position < macroData.Length; position++)
+                for (position = 0; position < macroDataList.Count; position++)
                 {
-                    if (macroData[position] == null)
+                    if (macroDataList[position] == null)
                     {
-                        macroData[position] = _macroData;
+                        macroDataList[position] = _macroData;
                         return true;
                     }
                 }
                 return false;
             }
-            public IMacroData LoadData(int _id)
+
+            public MacroData LoadData(int _id)
             {
                 int position = 0;
-                for (position = 0; position < macroData.Length; position++)
+                for (position = 0; position < macroDataList.Count; position++)
                 {
-                    if (macroData[position] == null)
+                    if (macroDataList[position] == null)
                     {
                         continue;
                     }
-                    if (macroData[position].id == _id)
+                    if (macroDataList[position].id == _id)
                     {
-                        return macroData[position];
+                        return macroDataList[position];
                     }
                 }
                 return null;
             }
 
-
+            public void PrintAccountList()
+            {
+                int position = 0;
+                for (position = 0; position < macroDataList.Count; position++)
+                {
+                    if (macroDataList[position] == null)
+                    {
+                        continue;
+                    }
+                    Console.WriteLine(macroDataList[position].ToString());
+                }
+            }
         }
 
         static void Main(string[] args)
         {
-            MacroData macroData = new MacroData(1, 'A', "Pass1", MacroType.Type1, "Dette er mit hemmelige password 1");
+            ListMacroData listMacroData = new ListMacroData();
 
+            listMacroData.SaveData(new MacroData(1, 'A', "Pass1", MacroType.Type1, "Dette er mit hemmelige password 1"));
+            listMacroData.SaveData(new MacroData(2, 'S', "Pass2", MacroType.Type1, "Dette er mit hemmelige password 2"));
+            listMacroData.SaveData(new MacroData(3, 'B', "Kommentar", MacroType.Type1, "// Obtain RSH Opgave 1.101"));
+
+            listMacroData.PrintAccountList();
+            Console.ReadKey();
         }
     }
 }
