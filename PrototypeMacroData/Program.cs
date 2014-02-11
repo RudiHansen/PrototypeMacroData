@@ -43,6 +43,7 @@ namespace PrototypeMacroData
                        "Code: " + this.code;
             }
         }
+        
 
         static void Main(string[] args)
         {
@@ -52,6 +53,22 @@ namespace PrototypeMacroData
             listMacroData.Add(new MacroData(2, 'S', "Pass2", MacroType.Type1, "Dette er mit hemmelige password 2"));
             listMacroData.Add(new MacroData(3, 'B', "Kommentar", MacroType.Type1, "// Obtain RSH Opgave 1.101"));
 
+            WriteListMacroDataToConsole(listMacroData);
+            SaveListMacroDataToFile(listMacroData);
+
+        }
+
+        private static void SaveListMacroDataToFile(List<MacroData> listMacroData)
+        {
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"C:\Temp\MactoData.txt"))
+                foreach (MacroData aMacroData in listMacroData)
+                {
+                    file.WriteLine(aMacroData);
+                }
+        }
+
+        private static void WriteListMacroDataToConsole(List<MacroData> listMacroData)
+        {
             Console.WriteLine();
             foreach (MacroData aMacroData in listMacroData)
             {
