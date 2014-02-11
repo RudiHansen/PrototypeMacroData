@@ -34,70 +34,29 @@ namespace PrototypeMacroData
                 this.type = _type;
                 this.code = _code;
             }
-        }
-        public class ListMacroData
-        {
-            private List<MacroData> macroDataList;
-
-            public ListMacroData()
+            public override string ToString()
             {
-                macroDataList = new List<MacroData>();
-            }
-
-            public bool SaveData(MacroData _macroData)
-            {
-                int position = 0;
-                for (position = 0; position < macroDataList.Count; position++)
-                {
-                    if (macroDataList[position] == null)
-                    {
-                        macroDataList[position] = _macroData;
-                        return true;
-                    }
-                }
-                return false;
-            }
-
-            public MacroData LoadData(int _id)
-            {
-                int position = 0;
-                for (position = 0; position < macroDataList.Count; position++)
-                {
-                    if (macroDataList[position] == null)
-                    {
-                        continue;
-                    }
-                    if (macroDataList[position].id == _id)
-                    {
-                        return macroDataList[position];
-                    }
-                }
-                return null;
-            }
-
-            public void PrintAccountList()
-            {
-                int position = 0;
-                for (position = 0; position < macroDataList.Count; position++)
-                {
-                    if (macroDataList[position] == null)
-                    {
-                        continue;
-                    }
-                    Console.WriteLine(macroDataList[position].ToString());
-                }
+                return "ID: " + this.id +
+                       "Key: " + this.key +
+                       "Description: " + this.desctiption +
+                       "Type: " + this.type +
+                       "Code: " + this.code;
             }
         }
 
         static void Main(string[] args)
         {
-            ListMacroData listMacroData = new ListMacroData();
+            List<MacroData> listMacroData = new List<MacroData>();
 
-            listMacroData.SaveData(new MacroData(1, 'A', "Pass1", MacroType.Type1, "Dette er mit hemmelige password 1"));
-            listMacroData.SaveData(new MacroData(2, 'S', "Pass2", MacroType.Type1, "Dette er mit hemmelige password 2"));
-            listMacroData.SaveData(new MacroData(3, 'B', "Kommentar", MacroType.Type1, "// Obtain RSH Opgave 1.101"));
+            listMacroData.Add(new MacroData(1, 'A', "Pass1", MacroType.Type1, "Dette er mit hemmelige password 1"));
+            listMacroData.Add(new MacroData(2, 'S', "Pass2", MacroType.Type1, "Dette er mit hemmelige password 2"));
+            listMacroData.Add(new MacroData(3, 'B', "Kommentar", MacroType.Type1, "// Obtain RSH Opgave 1.101"));
 
-            listMacroData.PrintAccountList();
+            Console.WriteLine();
+            foreach (MacroData aMacroData in listMacroData)
+            {
+                Console.WriteLine(aMacroData);
+            }
             Console.ReadKey();
         }
     }
