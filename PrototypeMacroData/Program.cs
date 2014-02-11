@@ -15,10 +15,7 @@ namespace PrototypeMacroData
             Type3
         };
 
-        //public interface IMacroData
-        //{
-        //}
-        public class MacroData //: IMacroData
+        public class MacroData
         {
             public int id;
             public char key;
@@ -42,8 +39,15 @@ namespace PrototypeMacroData
                        "Type: " + this.type +
                        "Code: " + this.code;
             }
+            public string ToCvrString()
+            {
+                return this.id + ";" +
+                       this.key + ";" +
+                       this.desctiption + ";" +
+                       this.type + ";" +
+                       this.code;
+            }
         }
-        
 
         static void Main(string[] args)
         {
