@@ -8,6 +8,8 @@ namespace PrototypeMacroData
 {
     class MacroDataClass
     {
+        const string fileName = @"C:\Temp\MactoData.txt";
+        const char fieldSeperator = ';';
         public enum MacroType
         {
             Type1,
@@ -19,15 +21,15 @@ namespace PrototypeMacroData
         {
             public int id;
             public char key;
-            public string desctiption;
+            public string description;
             public MacroType type;
             public string code;
 
-            public MacroData(int _id, char _key, string _desctiption,MacroType _type,string _code)
+            public MacroData(int _id, char _key, string _description,MacroType _type,string _code)
             {
                 this.id = _id;
                 this.key = _key;
-                this.desctiption = _desctiption;
+                this.description = _description;
                 this.type = _type;
                 this.code = _code;
             }
@@ -35,17 +37,26 @@ namespace PrototypeMacroData
             {
                 return "ID: " + this.id +
                        "Key: " + this.key +
-                       "Description: " + this.desctiption +
+                       "Description: " + this.description +
                        "Type: " + this.type +
                        "Code: " + this.code;
             }
-            public string ToCvrString()
+            public string ToCsvString()
             {
-                return this.id + ";" +
-                       this.key + ";" +
-                       this.desctiption + ";" +
-                       this.type + ";" +
+                return this.id + fieldSeperator +
+                       this.key + fieldSeperator +
+                       this.description + fieldSeperator +
+                       this.type + fieldSeperator +
                        this.code;
+            }
+            public void LoadFromCsvString(string _csvString)
+            {
+                string[] fields = _csvString.Split(fieldSeperator);
+                this.id = int.Parse(fields[0]);
+                this.key = char.Parse(fields[1]);
+                this.description = fields[2];
+                this.type = (MacroType)Enum.Parse(typeof(MacroType), fields[3]);
+                this.code = fields[4];
             }
         }
 
@@ -64,10 +75,10 @@ namespace PrototypeMacroData
 
         private static void SaveListMacroDataToFile(List<MacroData> listMacroData)
         {
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"C:\Temp\MactoData.txt"))
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(fileName))
                 foreach (MacroData aMacroData in listMacroData)
                 {
-                    file.WriteLine(aMacroData);
+                    file.WriteLine(aMacroData.ToCsvString());
                 }
         }
 
@@ -76,7 +87,7 @@ namespace PrototypeMacroData
             Console.WriteLine();
             foreach (MacroData aMacroData in listMacroData)
             {
-                Console.WriteLine(aMacroData);
+                Console.WriteLine(aMacroData.ToCsvString());
             }
             Console.ReadKey();
         }
