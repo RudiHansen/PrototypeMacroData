@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,6 +34,16 @@ namespace PrototypeMacroData
                 this.type = _type;
                 this.code = _code;
             }
+            public MacroData(string _csvString)
+            {
+                string[] fields = _csvString.Split(fieldSeperator);
+                this.id = int.Parse(fields[0]);
+                this.key = char.Parse(fields[1]);
+                this.description = fields[2];
+                this.type = (MacroType)Enum.Parse(typeof(MacroType), fields[3]);
+                this.code = fields[4];
+            }
+
             public override string ToString()
             {
                 return "ID: " + this.id +
@@ -49,24 +60,24 @@ namespace PrototypeMacroData
                        this.type + fieldSeperator +
                        this.code;
             }
-            public void LoadFromCsvString(string _csvString)
-            {
-                string[] fields = _csvString.Split(fieldSeperator);
-                this.id = int.Parse(fields[0]);
-                this.key = char.Parse(fields[1]);
-                this.description = fields[2];
-                this.type = (MacroType)Enum.Parse(typeof(MacroType), fields[3]);
-                this.code = fields[4];
-            }
         }
 
         static void Main(string[] args)
         {
             List<MacroData> listMacroData = new List<MacroData>();
 
-            listMacroData.Add(new MacroData(1, 'A', "Pass1", MacroType.Type1, "Dette er mit hemmelige password 1"));
-            listMacroData.Add(new MacroData(2, 'S', "Pass2", MacroType.Type1, "Dette er mit hemmelige password 2"));
-            listMacroData.Add(new MacroData(3, 'B', "Kommentar", MacroType.Type1, "// Obtain RSH Opgave 1.101"));
+            using (StreamReader reader = new StreamReader(fileName))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    listMacroData.Add(new MacroData(line));
+                }
+            }
+            
+            //listMacroData.Add(new MacroData(1, 'A', "Pass1", MacroType.Type1, "Dette er mit hemmelige password 1"));
+            //listMacroData.Add(new MacroData(2, 'S', "Pass2", MacroType.Type1, "Dette er mit hemmelige password 2"));
+            //listMacroData.Add(new MacroData(3, 'B', "Kommentar", MacroType.Type1, "// Obtain RSH Opgave 1.101"));
 
             WriteListMacroDataToConsole(listMacroData);
             SaveListMacroDataToFile(listMacroData);
@@ -75,7 +86,7 @@ namespace PrototypeMacroData
 
         private static void SaveListMacroDataToFile(List<MacroData> listMacroData)
         {
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(fileName))
+            using (StreamWriter file = new StreamWriter(fileName))
                 foreach (MacroData aMacroData in listMacroData)
                 {
                     file.WriteLine(aMacroData.ToCsvString());
